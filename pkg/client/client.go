@@ -3,6 +3,7 @@ package client
 
 import (
 	"errors"
+	"fmt"
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/common"
@@ -130,11 +131,12 @@ func (i *Client) SendUserOperation(op map[string]any, ep string) (string, error)
 	}
 
 	// Add userOp to mempool.
+	fmt.Println("--------add op begin-------------")
 	if err := i.mempool.AddOp(epAddr, ctx.UserOp); err != nil {
 		l.Error(err, "eth_sendUserOperation error")
 		return "", err
 	}
-
+	fmt.Println("--------add op end-------------")
 	l.Info("eth_sendUserOperation ok")
 	return hash.String(), nil
 }

@@ -3,6 +3,7 @@ package bundler
 
 import (
 	"context"
+	"fmt"
 	"math/big"
 	"time"
 
@@ -117,7 +118,7 @@ func (i *Bundler) Process(ep common.Address) (*modules.BatchHandlerCtx, error) {
 		WithName("run").
 		WithValues("entrypoint", ep.String()).
 		WithValues("chain_id", i.chainID.String())
-
+	fmt.Println("----------------bundler process-----------------")
 	// Get current block basefee
 	bf, err := i.gbf()
 	if err != nil {
@@ -150,7 +151,10 @@ func (i *Bundler) Process(ep common.Address) (*modules.BatchHandlerCtx, error) {
 		return nil, err
 	}
 	if len(batch) == 0 {
+		l.Info("------------mempool.dump 0--------------")
 		return nil, nil
+	} else {
+		l.Info("------------mempool.dump--------------", "count", len(batch))
 	}
 	batch = adjustBatchSize(i.maxBatch, batch)
 
